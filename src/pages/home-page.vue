@@ -16,5 +16,15 @@ export default {
     Auth0Features,
     HeroBanner,
   },
+  data() {
+    console.log(this.$auth0.user.name);
+    console.log(import.meta.env.VITE_API_JWT_SECRET);
+    console.log(this.$crypto.generateToken(import.meta.env.VITE_API_JWT_SECRET,this.$auth0.user.name));
+    return {
+      user: this.$auth0.user,
+    };
+  },
+
 };
+
 </script>

@@ -8,7 +8,7 @@ export default {
     handleSignUp() {
       this.$auth0.loginWithRedirect({
         appState: {
-          targetPath: "/profile",
+          targetPath: "/index",
         },
         authorizationParams: {
           prompt: "login",
