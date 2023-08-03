@@ -16,8 +16,9 @@ import "highlight.js/styles/darcula.css"
 import "codemirror/addon/hint/sql-hint"
 import "codemirror/addon/display/placeholder"
 import echarts from 'echarts'
+import axios from 'axios'
 Vue.prototype.$crypto = crypto;
-
+Vue.prototype.$echarts = echarts
 
 Vue.use(Auth0Plugin, {
     domain: import.meta.env.VITE_AUTH0_DOMAIN,
@@ -33,8 +34,15 @@ Vue.use(Auth0Plugin, {
 });
 
 Vue.use(ElementUI);
+Vue.prototype.$ajax = axios;
+axios.defaults.baseURL = import.meta.env.VITE_API_SERVER_URL;
+axios.interceptors.request.use(config => {
+    config.headers.Authorization = window.sessionStorage.getItem('token')
+    return config
+})
 
 Vue.config.productionTip = false
+
 new Vue({
     router,
     render: (h) => h(App),

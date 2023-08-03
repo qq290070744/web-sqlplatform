@@ -74,15 +74,16 @@
 </template>
 
 <script>
-import {getMenu} from "@/services/message.service";
+import {getEnv, getMenu, pending, dataExportPending} from "@/services/message.service";
 
 export default {
   name: "index-page",
   data() {
     return {
+      username: this.$auth0.user.name,
+      Authorization: this.$crypto.generateToken(import.meta.env.VITE_API_JWT_SECRET, this.$auth0.user.name),
       menulist: [],
       isCollapse: false,
-      username: "",
       asideWidth: "200px",
       rlicon: "el-icon-d-arrow-left",
       activeIndex: "0",
@@ -107,18 +108,24 @@ export default {
     };
   },
   created() {
-
+    this.username = this.$auth0.user.name;
+    this.get_env();
+    this.get_pendingOrder();
+    this.timer_pendingOrder = setInterval(this.get_pendingOrder, 3000000);
   },
   async mounted() {
-    this.Authorization = this.$crypto.generateToken(import.meta.env.VITE_API_JWT_SECRET, this.$auth0.user.name)
-    const {data, error} = await getMenu(this.Authorization);
+    //this.Authorization = this.$crypto.generateToken(import.meta.env.VITE_API_JWT_SECRET, this.$auth0.user.name)
+    const {data, error} = await getMenu(this.$crypto.generateToken(import.meta.env.VITE_API_JWT_SECRET, this.$auth0.user.name));
     if (data) {
       this.menulist = data.data;
       console.log(this.menulist)
     }
     if (error) {
       this.message = JSON.stringify(error, null, 2);
-      console.log(this.message)
+      this.$notify.error({
+        title: "错误",
+        message: this.message
+      });
     }
   },
   methods: {
@@ -141,6 +148,32 @@ export default {
         }
       });
     },
+    async get_env() {
+      const {data, error} = await getEnv(this.Authorization);
+      if (data) {
+        this.env_info = data.env;
+      }
+      if (error) {
+        this.$notify.error({
+          title: "错误",
+          message: JSON.stringify(error, null, 2)
+        });
+      }
+    },
+    async get_pendingOrder() {
+      window.sessionStorage.setItem('token', this.$crypto.generateToken(import.meta.env.VITE_API_JWT_SECRET, this.$auth0.user.name))
+      this.count = 0;
+      const {data, error} = await pending(this.$crypto.generateToken(import.meta.env.VITE_API_JWT_SECRET, this.$auth0.user.name));
+      if (data) {
+        this.count += data.total;
+      }
+      const {data: res, error1} = await dataExportPending(this.$crypto.generateToken(import.meta.env.VITE_API_JWT_SECRET, this.$auth0.user.name));
+      if (res) {
+        this.count += res.total;
+      }
+    },
+
+
   }
 
 
