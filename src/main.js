@@ -1,6 +1,7 @@
 import Vue from "vue";
 import App from "./app.vue";
 import "./assets/css/styles.css";
+import './assets/fonts/iconfont.css';
 import router from "./router";
 import {Auth0Plugin} from "./auth0-plugin";
 import crypto from "./crypto";
@@ -37,7 +38,7 @@ Vue.use(ElementUI);
 Vue.prototype.$ajax = axios;
 axios.defaults.baseURL = import.meta.env.VITE_API_SERVER_URL;
 axios.interceptors.request.use(config => {
-    config.headers.Authorization = window.sessionStorage.getItem('token')
+    config.headers.Authorization = window.localStorage.getItem('token')
     return config
 })
 

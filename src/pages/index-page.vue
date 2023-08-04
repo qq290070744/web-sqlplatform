@@ -111,7 +111,7 @@ export default {
     this.username = this.$auth0.user.name;
     this.get_env();
     this.get_pendingOrder();
-    this.timer_pendingOrder = setInterval(this.get_pendingOrder, 3000000);
+    this.timer_pendingOrder = setInterval(this.get_pendingOrder, 30000);
   },
   async mounted() {
     //this.Authorization = this.$crypto.generateToken(import.meta.env.VITE_API_JWT_SECRET, this.$auth0.user.name)
@@ -161,7 +161,8 @@ export default {
       }
     },
     async get_pendingOrder() {
-      window.sessionStorage.setItem('token', this.$crypto.generateToken(import.meta.env.VITE_API_JWT_SECRET, this.$auth0.user.name))
+      window.localStorage.setItem('username', this.$auth0.user.name)
+      window.localStorage.setItem('token', this.$crypto.generateToken(import.meta.env.VITE_API_JWT_SECRET, this.$auth0.user.name))
       this.count = 0;
       const {data, error} = await pending(this.$crypto.generateToken(import.meta.env.VITE_API_JWT_SECRET, this.$auth0.user.name));
       if (data) {

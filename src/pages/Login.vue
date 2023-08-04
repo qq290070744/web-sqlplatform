@@ -52,8 +52,8 @@ import qs from 'qs'
                             return this.$notify.error({title:'错误',message:'请检查网络连接'})
                         })
                         if (res.access_token) {
-                            window.sessionStorage.setItem('token', res.access_token)
-                            window.sessionStorage.setItem('username',this.formData.username)
+                            window.localStorage.setItem('token', res.access_token)
+                            window.localStorage.setItem('username',this.formData.username)
                             await this.$router.push('/index')
                         } else {
                             this.$message.error('用户名或密码错误')
