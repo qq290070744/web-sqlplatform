@@ -7,15 +7,16 @@
     </el-breadcrumb>
     <el-card>
       <el-form :inline="true" class="demo-form-inline">
-        <span class="demonstration"> -   选择日期: </span>
+        <span class="demonstration"> - 选择日期: </span>
         <el-date-picker
-            v-model="datetimevalue"
-            type="datetimerange"
-            :picker-options="pickerOptions"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            align="right">
+          v-model="datetimevalue"
+          type="datetimerange"
+          :picker-options="pickerOptions"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          align="right"
+        >
         </el-date-picker>
         -
         <el-form-item label="用户名">
@@ -34,88 +35,172 @@
         <el-button type="primary" @click="get_workorder">搜索</el-button>
       </el-form>
       <el-table :data="tableData" style="width: 100%" border stripe>
-        <el-table-column label="#" type="index" align="center" header-align="center"></el-table-column>
-        <el-table-column label="发起人" prop="sponsor" align="center" header-align="center"></el-table-column>
-        <el-table-column label="审核人" prop="approver_manager" align="center" header-align="center"></el-table-column>
-<!--        <el-table-column label="审核dba" prop="approver_dba" align="center" header-align="center"></el-table-column>-->
-        <el-table-column label="实例名称" prop="ins_name" align="center" header-align="center"></el-table-column>
-        <el-table-column label="实例地址" prop="host" align="center" header-align="center"></el-table-column>
-        <el-table-column label="数据库" prop="dbname" align="center" header-align="center"></el-table-column>
+        <el-table-column
+          label="#"
+          type="index"
+          align="center"
+          header-align="center"
+        ></el-table-column>
+        <el-table-column
+          label="发起人"
+          prop="sponsor"
+          align="center"
+          header-align="center"
+        ></el-table-column>
+        <el-table-column
+          label="审核人"
+          prop="approver_manager"
+          align="center"
+          header-align="center"
+        ></el-table-column>
+        <!--        <el-table-column label="审核dba" prop="approver_dba" align="center" header-align="center"></el-table-column>-->
+        <el-table-column
+          label="实例名称"
+          prop="ins_name"
+          align="center"
+          header-align="center"
+        ></el-table-column>
+        <el-table-column
+          label="实例地址"
+          prop="host"
+          align="center"
+          header-align="center"
+        ></el-table-column>
+        <el-table-column
+          label="数据库"
+          prop="dbname"
+          align="center"
+          header-align="center"
+        ></el-table-column>
         <el-table-column label="sql" align="center" header-align="center">
           <template slot-scope="scope">
             <pre><div v-html="scope.row.sql.slice(0,10)"></div></pre>
-            <el-button type="primary" @click="alert_sql(scope.row.sql);" size="mini" round>查看全部sql</el-button>
+            <el-button
+              type="primary"
+              @click="alert_sql(scope.row.sql)"
+              size="mini"
+              round
+              >查看全部sql</el-button
+            >
           </template>
         </el-table-column>
         <el-table-column label="状态" align="center" header-align="center">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.status==0? true: false" type="info">
+            <el-tag v-if="scope.row.status == 0 ? true : false" type="info">
               <span class="el-icon-success">待审批</span>
             </el-tag>
-            <el-tag v-if="scope.row.status==1? true: false" type="success">
+            <el-tag v-if="scope.row.status == 1 ? true : false" type="success">
               <span class="el-icon-success">通过</span>
             </el-tag>
-            <el-tag v-if="scope.row.status==2? true: false" type="danger">
+            <el-tag v-if="scope.row.status == 2 ? true : false" type="danger">
               <span class="el-icon-error">驳回</span>
             </el-tag>
-            <el-tag v-if="scope.row.status==3? true: false" type="success">
+            <el-tag v-if="scope.row.status == 3 ? true : false" type="success">
               <span class="el-icon-success">已下载</span>
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="sql执行状态" align="center" header-align="center">
+        <el-table-column
+          label="sql执行状态"
+          align="center"
+          header-align="center"
+        >
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.sql_exec_status===1" type="info">
+            <el-tag v-if="scope.row.sql_exec_status === 1" type="info">
               <span class="el-icon-success">执行中</span>
             </el-tag>
-            <el-tag v-if="scope.row.sql_exec_status===2" type="success">
+            <el-tag v-if="scope.row.sql_exec_status === 2" type="success">
               <span class="el-icon-success">执行完成</span>
             </el-tag>
-            <el-tag v-if="scope.row.sql_exec_status===3" type="danger">
+            <el-tag v-if="scope.row.sql_exec_status === 3" type="danger">
               <span class="el-icon-error">sql报错</span>
             </el-tag>
           </template>
         </el-table-column>
         <el-table-column label="链接" align="center" header-align="center">
           <template slot-scope="scope">
-            <el-link type="primary" v-if="scope.row.status==1? true: false" v-bind:href="scope.row.path" target="_blank">下载链接</el-link>
+            <el-link
+              type="primary"
+              v-if="scope.row.status == 1 ? true : false"
+              v-bind:href="scope.row.path"
+              target="_blank"
+              >下载链接</el-link
+            >
           </template>
         </el-table-column>
-        <el-table-column label="发起时间" width="110" prop="create_time" align="center" header-align="center"></el-table-column>
-        <el-table-column label="审批时间" width="110" align="center" header-align="center">
+        <el-table-column
+          label="发起时间"
+          width="110"
+          prop="create_time"
+          align="center"
+          header-align="center"
+        ></el-table-column>
+        <el-table-column
+          label="审批时间"
+          width="110"
+          align="center"
+          header-align="center"
+        >
           <template slot-scope="scope">
-            <span type="primary" v-if="scope.row.status>=1">{{ scope.row.approve_time }}</span>
+            <span type="primary" v-if="scope.row.status >= 1">{{
+              scope.row.approve_time
+            }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="下载时间" width="110" align="center" header-align="center">
+        <el-table-column
+          label="下载时间"
+          width="110"
+          align="center"
+          header-align="center"
+        >
           <template slot-scope="scope">
-            <span type="primary" v-if="scope.row.status===3">{{ scope.row.download_time }}</span>
+            <span type="primary" v-if="scope.row.status === 3">{{
+              scope.row.download_time
+            }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="工单说明" prop="remark" align="center" header-align="center"></el-table-column>
-        <el-table-column prop="is_check" label="是否检查" align="center" header-align="center">
+        <el-table-column
+          label="工单说明"
+          prop="remark"
+          align="center"
+          header-align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="is_check"
+          label="是否检查"
+          align="center"
+          header-align="center"
+        >
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.is_check===1" type="success" class="iconfont icon-zhengchang"></el-tag>
-            <el-tag v-if="scope.row.is_check===0" type="danger" class="iconfont icon-yichang"></el-tag>
-            <el-button v-if="scope.row.is_check===0"
-                       type="primary"
-                       size="mini"
-                       @click="order_mark_check(scope.row.id)"
-            >点击标记检查
+            <el-tag
+              v-if="scope.row.is_check === 1"
+              type="success"
+              class="iconfont icon-zhengchang"
+            ></el-tag>
+            <el-tag
+              v-if="scope.row.is_check === 0"
+              type="danger"
+              class="iconfont icon-yichang"
+            ></el-tag>
+            <el-button
+              v-if="scope.row.is_check === 0"
+              type="primary"
+              size="mini"
+              @click="order_mark_check(scope.row.id)"
+              >点击标记检查
             </el-button>
           </template>
-
         </el-table-column>
       </el-table>
       <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="offset"
-          :page-sizes="[10,20,50,100]"
-          :page-size="limit"
-          :hide-on-single-page="true"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="offset"
+        :page-sizes="[10, 20, 50, 100]"
+        :page-size="limit"
+        :hide-on-single-page="true"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
       ></el-pagination>
     </el-card>
   </div>
@@ -132,37 +217,41 @@ export default {
       limit: 10,
       total: 0,
       pickerOptions: {
-        shortcuts: [{
-          text: '最近一周',
-          onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-            picker.$emit('pick', [start, end]);
-          }
-        }, {
-          text: '最近一个月',
-          onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-            picker.$emit('pick', [start, end]);
-          }
-        }, {
-          text: '最近三个月',
-          onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-            picker.$emit('pick', [start, end]);
-          }
-        }]
+        shortcuts: [
+          {
+            text: "最近一周",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", [start, end]);
+            },
+          },
+          {
+            text: "最近一个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit("pick", [start, end]);
+            },
+          },
+          {
+            text: "最近三个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit("pick", [start, end]);
+            },
+          },
+        ],
       },
       datetimevalue: [],
       is_check: 2,
-      sponsor: '',
-      host: '',
-      dbname: '',
+      sponsor: "",
+      host: "",
+      dbname: "",
     };
   },
   mounted() {
@@ -180,14 +269,14 @@ export default {
     async get_workorder() {
       let is_check;
       if (this.is_check === true) {
-        is_check = 1
+        is_check = 1;
       } else if (this.is_check === false) {
-        is_check = 0
+        is_check = 0;
       } else if (this.is_check === 2) {
-        is_check = 2
+        is_check = 2;
       }
-      let start_time = ''
-      let end_time = ''
+      let start_time = "";
+      let end_time = "";
       // console.log(this.datetimevalue)
       if (this.datetimevalue) {
         if (this.datetimevalue.length > 1) {
@@ -195,17 +284,18 @@ export default {
           const date1 = new Date(this.datetimevalue[1]);
           start_time = Date.parse(date) / 1000;
           end_time = Date.parse(date1) / 1000;
-
         }
       }
-      const {data: res} = await this.$ajax
-          .get(`/historyorder_data_export/?offset=${this.offset}&limit=${this.limit}&is_check=${is_check}&start_time=${start_time}&end_time=${end_time}&sponsor=${this.sponsor}&host=${this.host}&dbname=${this.dbname}`)
-          .catch(() => {
-            return this.$notify.error({
-              title: "错误",
-              message: "发起请求历史工单失败"
-            });
+      const { data: res } = await this.$ajax
+        .get(
+          `/historyorder_data_export/?offset=${this.offset}&limit=${this.limit}&is_check=${is_check}&start_time=${start_time}&end_time=${end_time}&sponsor=${this.sponsor}&host=${this.host}&dbname=${this.dbname}`
+        )
+        .catch(() => {
+          return this.$notify.error({
+            title: "错误",
+            message: "发起请求历史工单失败",
           });
+        });
       if (res.msg !== "success") return this.$message.error("获取历史工单失败");
       this.tableData = res.data;
       this.total = res.total;
@@ -218,28 +308,28 @@ export default {
     async alert_sql(sql) {
       sql = sqlFormatter.format(sql);
       sql = hljs.highlight("sql", sql).value;
-      this.$alert('<pre>' + sql + '</pre>', 'sql', {
+      this.$alert("<pre>" + sql + "</pre>", "sql", {
         dangerouslyUseHTMLString: true,
       });
     },
     async alert_remark(remark) {
-      await this.$alert('<pre>' + remark + '</pre>', 'remark', {
+      await this.$alert("<pre>" + remark + "</pre>", "remark", {
         dangerouslyUseHTMLString: true,
       });
     },
     async order_mark_check(id) {
-      const {data: res} = await this.$ajax
-          .post(`/data_export_order_mark_check/${id}/`)
-          .catch(() => {
-            return this.$notify.error({
-              title: "错误",
-              message: "发起请求失败"
-            });
+      const { data: res } = await this.$ajax
+        .post(`/data_export_order_mark_check/${id}/`)
+        .catch(() => {
+          return this.$notify.error({
+            title: "错误",
+            message: "发起请求失败",
           });
+        });
       if (res.msg !== "success") return this.$message.error(res.msg);
-      await this.get_workorder()
+      await this.get_workorder();
     },
-  }
+  },
 };
 </script>
 
