@@ -6,22 +6,31 @@
       <el-breadcrumb-item>CRUD</el-breadcrumb-item>
     </el-breadcrumb>
     <el-card>
-      <el-form :model="queryInfo" ref="queryRef" :rules="queryRules" label-position="left">
+      <el-form
+        :model="queryInfo"
+        ref="queryRef"
+        :rules="queryRules"
+        label-position="left"
+      >
         <el-row>
           <el-col :span="8">
-            <el-form-item label="实例名称/地址:" prop="selectHost" label-width="150px">
+            <el-form-item
+              label="实例名称/地址:"
+              prop="selectHost"
+              label-width="150px"
+            >
               <el-select
-                  v-model="queryInfo.selectHost"
-                  filterable
-                  placeholder="请选择实例地址"
-                  style="width: 250px;"
-                  @change="get_db('queryRef')"
+                v-model="queryInfo.selectHost"
+                filterable
+                placeholder="请选择实例地址"
+                style="width: 250px"
+                @change="get_db('queryRef')"
               >
                 <el-option
-                    v-for="item in options"
-                    :key="item.id"
-                    :value="item.id"
-                    :label="item.ins_name+'/'+item.host+'/'+item.type"
+                  v-for="item in options"
+                  :key="item.id"
+                  :value="item.id"
+                  :label="item.ins_name + '/' + item.host + '/' + item.type"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -29,13 +38,18 @@
           <el-col :span="8">
             <el-form-item label="数据库:" prop="selectDb" label-width="150px">
               <el-select
-                  v-model="queryInfo.selectDb"
-                  filterable
-                  placeholder="请选择数据库"
-                  @change="getTable"
-                  style="width: 250px;"
+                v-model="queryInfo.selectDb"
+                filterable
+                placeholder="请选择数据库"
+                @change="getTable"
+                style="width: 250px"
               >
-                <el-option v-for="item in dbs" :key="item.db" :value="item.db" :label="item.db"></el-option>
+                <el-option
+                  v-for="item in dbs"
+                  :key="item.db"
+                  :value="item.db"
+                  :label="item.db"
+                ></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -43,24 +57,32 @@
         <el-row>
           <el-col :span="8">
             <el-form-item label="审批主管: " prop="manager" label-width="150px">
-              <el-select placeholder="请选择审批主管" style="width: 250px;" v-model="queryInfo.manager">
+              <el-select
+                placeholder="请选择审批主管"
+                style="width: 250px"
+                v-model="queryInfo.manager"
+              >
                 <el-option
-                    v-for="item in manager"
-                    :key="item.id"
-                    :value="item.id"
-                    :label="item.username"
+                  v-for="item in manager"
+                  :key="item.id"
+                  :value="item.id"
+                  :label="item.username"
                 ></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="审批DBA: " prop="dba" label-width="150px">
-              <el-select placeholder="请选择审批DBA" style="width: 250px;" v-model="queryInfo.dba">
+              <el-select
+                placeholder="请选择审批DBA"
+                style="width: 250px"
+                v-model="queryInfo.dba"
+              >
                 <el-option
-                    v-for="item in dba"
-                    :key="item.id"
-                    :value="item.id"
-                    :label="item.username"
+                  v-for="item in dba"
+                  :key="item.id"
+                  :value="item.id"
+                  :label="item.username"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -68,34 +90,53 @@
         </el-row>
         <el-row>
           <el-col :span="16">
-            <el-form-item label="工单说明: " prop="remark" label-width="150px">
-              <textarea v-model="queryInfo.remark" rows="3" style="width: 75%;"></textarea>
+            <el-form-item label="工单说明: " prop="remark">
+              <textarea
+                v-model="queryInfo.remark"
+                rows="3"
+                style="width: 85%; height: 80px"
+              ></textarea>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="17">
             <el-form-item label="SQL:" prop="sql">
-              <textarea ref="mycode" v-model="queryInfo.sql" rows="20"></textarea>
+              <textarea
+                ref="mycode"
+                v-model="queryInfo.sql"
+                rows="20"
+              ></textarea>
             </el-form-item>
           </el-col>
           <el-col :span="7">
             <el-select
-                v-model="activeName"
-                filterable
-                placeholder="请选择表"
-                @change="getDesc"
+              v-model="activeName"
+              filterable
+              placeholder="请选择表"
+              @change="getDesc"
             >
-              <el-option v-for="item in tabs" :key="item" :value="item" :label="item"></el-option>
+              <el-option
+                v-for="item in tabs"
+                :key="item"
+                :value="item"
+                :label="item"
+              ></el-option>
             </el-select>
             <ul style="overflow: auto">
               <el-collapse
-                  v-model="activeName"
-                  accordion
-                  style="max-height: 450px"
-                  @change="getDesc"
+                v-model="activeName"
+                accordion
+                style="max-height: 450px"
+                @change="getDesc"
               >
-                <el-collapse-item style="width: 100%" v-for="item in tabs" :key="item" :title="item" :name="item">
+                <el-collapse-item
+                  style="width: 100%"
+                  v-for="item in tabs"
+                  :key="item"
+                  :title="item"
+                  :name="item"
+                >
                   <!--                  <div v-html="desc"></div>-->
                 </el-collapse-item>
               </el-collapse>
@@ -108,21 +149,37 @@
             <el-button @click="alter_merge" type="primary">alter合并</el-button>
           </el-col>
           <el-col :span="6">
-            <el-button type="info" @click="resetForm('queryRef')">重置</el-button>
-            <el-button type="primary" @click="commitForm('queryRef')">提交</el-button>
+            <el-button type="info" @click="resetForm('queryRef')"
+              >重置</el-button
+            >
+            <el-button type="primary" @click="commitForm('queryRef')"
+              >提交</el-button
+            >
           </el-col>
         </el-row>
       </el-form>
     </el-card>
-    <el-dialog title="SQL审核结果" width="60%" :visible="dialogVisible" @close="dialogClose">
-      <div v-for="(item,index) in result" :key="index">
+    <el-dialog
+      title="SQL审核结果"
+      width="60%"
+      :visible="dialogVisible"
+      @close="dialogClose"
+    >
+      <div v-for="(item, index) in result" :key="index">
         <el-divider>SQL {{ index + 1 }}</el-divider>
-        <el-tag v-for="(i,idx) in item.split('\n')" :key="idx" v-if="i!==''">{{ i }}</el-tag>
+        <el-tag
+          v-for="(i, idx) in item.split('\n')"
+          :key="idx"
+          v-if="i !== ''"
+          >{{ i }}</el-tag
+        >
       </div>
       <el-divider>END</el-divider>
       <el-row>
         <el-col :push="18">
-          <el-button type="info" @click="dialogClose">已知晓,返回修改sql</el-button>
+          <el-button type="info" @click="dialogClose"
+            >已知晓,返回修改sql</el-button
+          >
         </el-col>
       </el-row>
     </el-dialog>
@@ -133,14 +190,14 @@
 import sqlFormatter from "sql-formatter";
 import hljs from "highlight.js";
 import MarkdownItVue from "markdown-it-vue";
-import {formatTimeToStr} from "../plugins/dateformat";
+import { formatTimeToStr } from "../plugins/dateformat";
 
-import CodeMirror from "codemirror/lib/codemirror"
-import "codemirror/addon/edit/matchbrackets"
-import "codemirror/addon/selection/active-line"
-import "codemirror/mode/sql/sql"
-import "codemirror/addon/hint/show-hint"
-import "codemirror/addon/hint/sql-hint"
+import CodeMirror from "codemirror/lib/codemirror";
+import "codemirror/addon/edit/matchbrackets";
+import "codemirror/addon/selection/active-line";
+import "codemirror/mode/sql/sql";
+import "codemirror/addon/hint/show-hint";
+import "codemirror/addon/hint/sql-hint";
 // let CodeMirror = require("codemirror/lib/codemirror");
 // require("codemirror/addon/edit/matchbrackets");
 // require("codemirror/addon/selection/active-line");
@@ -150,7 +207,7 @@ import "codemirror/addon/hint/sql-hint"
 
 export default {
   components: {
-    MarkdownItVue
+    MarkdownItVue,
   },
   name: "Query",
   data() {
@@ -161,7 +218,7 @@ export default {
         sql: "",
         manager: "",
         dba: "",
-        remark: ""
+        remark: "",
       },
       activeName: "",
       options: [],
@@ -170,25 +227,27 @@ export default {
         selectHost: {
           required: true,
           message: "请选择实例",
-          trigger: "change"
+          trigger: "change",
         },
         selectDb: {
           required: true,
           message: "请选择数据库",
-          trigger: "change"
+          trigger: "change",
         },
-        sql: {required: true, message: "SQL不可为空", trigger: "blur"},
-        manager: {required: true, message: "选择主管", trigger: "blur"},
-        dba: {required: true, message: "选择dba", trigger: "blur"},
-        remark: [{required: true, message: "必须填写工单说明", trigger: "blur"}
-          , {min: 10, max: 100, message: '长度最少 10 个字符', trigger: 'blur'}]
+        sql: { required: true, message: "SQL不可为空", trigger: "blur" },
+        manager: { required: true, message: "选择主管", trigger: "blur" },
+        dba: { required: true, message: "选择dba", trigger: "blur" },
+        remark: [
+          { required: true, message: "必须填写工单说明", trigger: "blur" },
+          { min: 10, max: 100, message: "长度最少 10 个字符", trigger: "blur" },
+        ],
       },
       tabs: [],
       desc: "",
       dialogVisible: false,
       result: [],
       manager: [],
-      dba: []
+      dba: [],
     };
   },
   mounted() {
@@ -198,8 +257,8 @@ export default {
   },
   methods: {
     async get_approver() {
-      const {data: res} = await this.$ajax.get("/get_approver/").catch(() => {
-        return this.$notify.error({title: "错误", message: "请求审批人失败"});
+      const { data: res } = await this.$ajax.get("/get_approver/").catch(() => {
+        return this.$notify.error({ title: "错误", message: "请求审批人失败" });
       });
       if (res.msg !== "success") return this.$message.error("获取审批人失败");
       this.manager = res.data.manager;
@@ -210,19 +269,19 @@ export default {
       this.result = [];
     },
     async commitForm(form) {
-      this.queryInfo.sql = this.editor.getValue()
-      this.$refs[form].validate(async valid => {
+      this.queryInfo.sql = this.editor.getValue();
+      this.$refs[form].validate(async (valid) => {
         if (!valid) return this.$message.error("请选择/填写必要项");
         // this.sqlFormat();
         this.queryInfo.sql = this.editor.getValue();
-        const {data: res} = await this.$ajax
-            .post("/inspect/", this.queryInfo)
-            .catch(() => {
-              return this.$notify.error({
-                title: "请求失败",
-                message: "SQL发起审核失败"
-              });
+        const { data: res } = await this.$ajax
+          .post("/inspect/", this.queryInfo)
+          .catch(() => {
+            return this.$notify.error({
+              title: "请求失败",
+              message: "SQL发起审核失败",
             });
+          });
         if (res.msg !== "success") return this.$message.error("SQL审核失败");
         if (res.data) {
           this.result = res.data;
@@ -235,20 +294,20 @@ export default {
     },
     async getDesc() {
       if (this.activeName !== "") {
-        const {data: res} = await this.$ajax.get(
-            `/get_desc/?id=${this.queryInfo.selectHost}&dbname=${this.queryInfo.selectDb}&table=${this.activeName}`
+        const { data: res } = await this.$ajax.get(
+          `/get_desc/?id=${this.queryInfo.selectHost}&dbname=${this.queryInfo.selectDb}&table=${this.activeName}`
         );
         this.desc = res.data[1];
         this.desc = hljs.highlight("sql", this.desc).value;
-        await this.$alert('<pre>' + this.desc + '</pre>', this.activeName, {
+        await this.$alert("<pre>" + this.desc + "</pre>", this.activeName, {
           dangerouslyUseHTMLString: true,
         });
-        this.activeName = ''
+        this.activeName = "";
       }
     },
     async getTable() {
-      const {data: res} = await this.$ajax.get(
-          `/get_table/?id=${this.queryInfo.selectHost}&dbname=${this.queryInfo.selectDb}`
+      const { data: res } = await this.$ajax.get(
+        `/get_table/?id=${this.queryInfo.selectHost}&dbname=${this.queryInfo.selectDb}`
       );
       if (res.msg !== "success")
         return this.$message.error("库中数据表获取失败");
@@ -262,11 +321,11 @@ export default {
       this.dbs = [];
     },
     async get_master_ins() {
-      const {data: res} = await this.$ajax
-          .get("/get_master_ins/")
-          .catch(() => {
-            return this.$notify.error({title: "错误", message: "获取实例失败"});
-          });
+      const { data: res } = await this.$ajax
+        .get("/get_master_ins/")
+        .catch(() => {
+          return this.$notify.error({ title: "错误", message: "获取实例失败" });
+        });
       if (res.msg !== "success") return this.$message.error("获取实例失败");
       this.options = res.data;
     },
@@ -274,14 +333,14 @@ export default {
       if (this.queryInfo.selectDb !== "") this.queryInfo.selectDb = "";
       this.dbs = [];
       this.tabs = [];
-      const {data: res} = await this.$ajax
-          .get(`/get_schema/?id=${this.queryInfo.selectHost}`)
-          .catch(() => {
-            return this.$notify.error({
-              title: "错误",
-              message: "获取数据库失败，请检查实例连接配置"
-            });
+      const { data: res } = await this.$ajax
+        .get(`/get_schema/?id=${this.queryInfo.selectHost}`)
+        .catch(() => {
+          return this.$notify.error({
+            title: "错误",
+            message: "获取数据库失败，请检查实例连接配置",
           });
+        });
       if (res.msg !== "success")
         return this.$message.error("获取数据库失败，请检查实例连接状态");
       this.dbs = res.data;
@@ -299,32 +358,32 @@ export default {
         foldGutter: true,
         completeSingle: false,
         placeholder:
-            "-- Tips:请先选择环境、库名，这样可以在使用Tab键时有补全提示",
-        extraKeys: {Tab: "autocomplete"}, //自定义快捷键
+          "-- Tips:请先选择环境、库名，这样可以在使用Tab键时有补全提示",
+        extraKeys: { Tab: "autocomplete" }, //自定义快捷键
         hintOptions: {
           //自定义提示选项
-          tables: {}
-        }
+          tables: {},
+        },
       })),
-          this.editor.setSize("800px", "450px");
+        this.editor.setSize("800px", "450px");
     },
     sqlFormat() {
       this.editor.setValue(sqlFormatter.format(this.editor.getValue()));
     },
     async alter_merge() {
       this.queryInfo.sql = this.editor.getValue();
-      const {data: res} = await this.$ajax
-          .post("/alter_merge/", {"sql": this.queryInfo.sql})
-          .catch(() => {
-            return this.$notify.error({
-              title: "请求失败",
-              message: "alter合并失败"
-            });
+      const { data: res } = await this.$ajax
+        .post("/alter_merge/", { sql: this.queryInfo.sql })
+        .catch(() => {
+          return this.$notify.error({
+            title: "请求失败",
+            message: "alter合并失败",
           });
+        });
       if (res.msg !== "success") return this.$message.error("alter合并失败");
       this.editor.setValue(res.data.sql);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -348,7 +407,6 @@ ul {
   overflow: auto;
   overflow-x: hidden;
 }
-
 
 .el-tag {
   margin-top: 5px;
