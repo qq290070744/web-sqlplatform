@@ -13,7 +13,6 @@ export default defineConfig({
       vueTemplateOptions: {
         compiler: vueTemplateBabelCompiler,
       },
-
     }),
     legacy({
       targets: ["ie >= 11"],
