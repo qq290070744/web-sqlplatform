@@ -7,6 +7,7 @@ Vue.use(Router);
 
 const NotFoundPage = () => import("@/pages/not-found-page.vue");
 const ProfilePage = () => import("@/pages/profile-page.vue");
+const Profile = () => import("@/pages/profile.vue");
 const PublicPage = () => import("@/pages/public-page.vue");
 const ProtectedPage = () => import("@/pages/protected-page.vue");
 const AdminPage = () => import("@/pages/admin-page.vue");
@@ -50,6 +51,12 @@ const router = new Router({
       component: Index,
       beforeEnter: authenticationGuard,
       children: [
+        {
+          path: "/profile1",
+          name: "profile1",
+          component: Profile,
+          beforeEnter: authenticationGuard,
+        },
         {
           path: "/dashboard",
           name: "首页面板",

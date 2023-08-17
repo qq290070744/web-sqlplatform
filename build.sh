@@ -1,4 +1,4 @@
-tag=satge-20230817
+tag=satge-20230817.1
 npm run build
 docker build -t registry.cn-shanghai.aliyuncs.com/jwh/web_sql_platform:$tag .
 docker push registry.cn-shanghai.aliyuncs.com/jwh/web_sql_platform:$tag

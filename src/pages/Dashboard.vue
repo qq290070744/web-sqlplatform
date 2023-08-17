@@ -4,68 +4,88 @@
       <el-breadcrumb-item :to="{ path: '/dashboard' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>Dashboard</el-breadcrumb-item>
     </el-breadcrumb>
+
     <el-card>
       <el-row>
         <el-col :span="12">
-          <div id="row1_col1" style="width: 600px;height:280px;"></div>
+          <div id="row1_col1" style="width: 600px; height: 280px"></div>
         </el-col>
         <el-col :span="6">
-          <div id="row1_col2" style="width: 600px;height:280px;"></div>
+          <div id="row1_col2" style="width: 600px; height: 280px"></div>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <div id="row1_col3" style="width: 600px;height:280px;"></div>
+          <div id="row1_col3" style="width: 600px; height: 280px"></div>
         </el-col>
         <el-col :span="12">
-          <div id="row1_col4" style="width: 600px;height:280px;"></div>
+          <div id="row1_col4" style="width: 600px; height: 280px"></div>
         </el-col>
       </el-row>
-
     </el-card>
   </div>
 </template>
 
 <script>
+// eslint-disable-next-line no-unused-vars
 import echartsLiquidfill from "echarts-liquidfill";
-import {getMenu, getQueryLog, sqlcount, workorder, workorderDataExport} from "@/services/message.service"; //在这里引入
+import {
+  getQueryLog,
+  sqlcount,
+  workorder,
+  workorderDataExport,
+} from "@/services/message.service";
+import CodeSnippet from "@/components/code-snippet.vue"; //在这里引入
 
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: "Dashboard",
+  // eslint-disable-next-line vue/no-unused-components
+  components: { CodeSnippet },
   data() {
     // 指定图表的配置项和数据
-
     return {
+      user: this.$auth0.user,
       name_list: [],
-      data_source: []
+      data_source: [],
     };
+  },
+  computed: {
+    code() {
+      return JSON.stringify(this.user, null, 2);
+    },
   },
   mounted() {
     this.showChart();
   },
   methods: {
     async showChart() {
-      const {data:res, error} = await sqlcount(this.$crypto.generateToken(import.meta.env.VITE_API_JWT_SECRET, this.$auth0.user.name));
+      const { data: res, error } = await sqlcount(
+        this.$crypto.generateToken(
+          import.meta.env.VITE_API_JWT_SECRET,
+          this.$auth0.user.name
+        )
+      );
       this.data_source = res.data;
-      this.data_source.forEach(item => {
+      this.data_source.forEach((item) => {
         this.name_list.push(item.name);
       });
       var myChart = this.$echarts.init(document.getElementById("row1_col1"));
       var option = {
         title: {
           text: "用户操作占比统计(累计值)",
-          font: '30px 黑体',
+          font: "30px 黑体",
           x: "30%",
-          y: "90%"
+          y: "90%",
         },
         tooltip: {
           trigger: "item",
-          formatter: "{a} <br/>{b} : {c} ({d}%)"
+          formatter: "{a} <br/>{b} : {c} ({d}%)",
         },
         legend: {
           orient: "vertical",
           left: "left",
-          data: this.name_list
+          data: this.name_list,
         },
         series: [
           {
@@ -78,25 +98,30 @@ export default {
               itemStyle: {
                 shadowBlur: 10,
                 shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)"
-              }
-            }
-          }
-        ]
+                shadowColor: "rgba(0, 0, 0, 0.5)",
+              },
+            },
+          },
+        ],
       };
       myChart.setOption(option);
       await this.showRow1Col2();
     },
     async showRow1Col2() {
       //const {data: res} = await this.$ajax.get('/workorder/?offset=1&limit=1')
-      const {data:res, error} = await workorder(this.$crypto.generateToken(import.meta.env.VITE_API_JWT_SECRET, this.$auth0.user.name));
+      const { data: res, error } = await workorder(
+        this.$crypto.generateToken(
+          import.meta.env.VITE_API_JWT_SECRET,
+          this.$auth0.user.name
+        )
+      );
       var myChart2 = this.$echarts.init(document.getElementById("row1_col2"));
       var value = res.total;
       var index = 1;
       var textName = "已提交工单";
       var colors = [
         ["#00d5ee", "#076c83"],
-        ["#fe3f4f", "#7d273a"]
+        ["#fe3f4f", "#7d273a"],
       ];
       var bgColors = ["#0d263c", "#26172c"];
       //波浪的层数
@@ -104,8 +129,8 @@ export default {
       var option = {
         title: {
           text: "已提交SQL工单数(累计值)",
-          x: '35%',
-          y: '90%'
+          x: "35%",
+          y: "90%",
         },
         backgroundColor: "#fff",
         graphic: [
@@ -113,8 +138,7 @@ export default {
             type: "group",
             left: "center",
             bottom: 10,
-
-          }
+          },
         ],
         series: [
           {
@@ -129,43 +153,48 @@ export default {
               borderDistance: 4, //边框距离
               itemStyle: {
                 borderWidth: 2,
-                borderColor: colors[index][0]
+                borderColor: colors[index][0],
                 // shadowBlur: 3,
                 // shadowColor: colors[colorIndex][0]
-              }
+              },
             },
             backgroundStyle: {
               borderWidth: 2, //内边框宽度
               borderColor: "#051c45", //colors[colorIndex][0], //背景内边框
               color: bgColors[index], //背景颜色
               shadowColor: bgColors[index], //阴影
-              shadowBlur: 5 //阴影模糊
+              shadowBlur: 5, //阴影模糊
             },
             label: {
               normal: {
                 formatter: value.toFixed(0),
                 textStyle: {
-                  fontSize: 18
+                  fontSize: 18,
                 },
-                insideColor: "#fff" //colors[colorIndex][0]
-              }
-            }
-          }
-        ]
+                insideColor: "#fff", //colors[colorIndex][0]
+              },
+            },
+          },
+        ],
       };
       myChart2.setOption(option);
       await this.showRow1Col3();
     },
     async showRow1Col3() {
       // const {data: res} = await this.$ajax.get('/workorder_data_export/?offset=1&limit=1')
-      const {data:res, error} = await workorderDataExport(this.$crypto.generateToken(import.meta.env.VITE_API_JWT_SECRET, this.$auth0.user.name));
+      const { data: res, error } = await workorderDataExport(
+        this.$crypto.generateToken(
+          import.meta.env.VITE_API_JWT_SECRET,
+          this.$auth0.user.name
+        )
+      );
       var myChart2 = this.$echarts.init(document.getElementById("row1_col3"));
       var value = res.total;
       var index = 1;
       var textName = "已提交工单";
       var colors = [
         ["#00d5ee", "#076c83"],
-        ["#fe3f4f", "#7d273a"]
+        ["#fe3f4f", "#7d273a"],
       ];
       var bgColors = ["#0d263c", "#26172c"];
       //波浪的层数
@@ -173,8 +202,8 @@ export default {
       var option1 = {
         title: {
           text: "已提交数据导出工单数(累计值)",
-          x: '35%',
-          y: '90%'
+          x: "35%",
+          y: "90%",
         },
         backgroundColor: "#fff",
         graphic: [
@@ -182,8 +211,7 @@ export default {
             type: "group",
             left: "center",
             bottom: 10,
-
-          }
+          },
         ],
         series: [
           {
@@ -198,43 +226,48 @@ export default {
               borderDistance: 4, //边框距离
               itemStyle: {
                 borderWidth: 2,
-                borderColor: colors[index][0]
+                borderColor: colors[index][0],
                 // shadowBlur: 3,
                 // shadowColor: colors[colorIndex][0]
-              }
+              },
             },
             backgroundStyle: {
               borderWidth: 2, //内边框宽度
               borderColor: "#051c45", //colors[colorIndex][0], //背景内边框
               color: bgColors[index], //背景颜色
               shadowColor: bgColors[index], //阴影
-              shadowBlur: 5 //阴影模糊
+              shadowBlur: 5, //阴影模糊
             },
             label: {
               normal: {
                 formatter: value.toFixed(0),
                 textStyle: {
-                  fontSize: 18
+                  fontSize: 18,
                 },
-                insideColor: "#fff" //colors[colorIndex][0]
-              }
-            }
-          }
-        ]
+                insideColor: "#fff", //colors[colorIndex][0]
+              },
+            },
+          },
+        ],
       };
       myChart2.setOption(option1);
       await this.showRow1Col4();
     },
     async showRow1Col4() {
       // const {data: res} = await this.$ajax.get('/get_query_log?offset=1&limit=1')
-      const {data:res, error} = await getQueryLog(this.$crypto.generateToken(import.meta.env.VITE_API_JWT_SECRET, this.$auth0.user.name));
+      const { data: res, error } = await getQueryLog(
+        this.$crypto.generateToken(
+          import.meta.env.VITE_API_JWT_SECRET,
+          this.$auth0.user.name
+        )
+      );
       var myChart2 = this.$echarts.init(document.getElementById("row1_col4"));
       var value = res.total;
       var index = 1;
       var textName = "已提交查询数量";
       var colors = [
         ["#00d5ee", "#076c83"],
-        ["#fe3f4f", "#7d273a"]
+        ["#fe3f4f", "#7d273a"],
       ];
       var bgColors = ["#0d263c", "#26172c"];
       //波浪的层数
@@ -242,8 +275,8 @@ export default {
       var option1 = {
         title: {
           text: "已提交查询数量(累计值)",
-          x: '35%',
-          y: '90%'
+          x: "35%",
+          y: "90%",
         },
         backgroundColor: "#fff",
         graphic: [
@@ -251,8 +284,7 @@ export default {
             type: "group",
             left: "center",
             bottom: 10,
-
-          }
+          },
         ],
         series: [
           {
@@ -267,35 +299,34 @@ export default {
               borderDistance: 4, //边框距离
               itemStyle: {
                 borderWidth: 2,
-                borderColor: colors[index][0]
+                borderColor: colors[index][0],
                 // shadowBlur: 3,
                 // shadowColor: colors[colorIndex][0]
-              }
+              },
             },
             backgroundStyle: {
               borderWidth: 2, //内边框宽度
               borderColor: "#051c45", //colors[colorIndex][0], //背景内边框
               color: bgColors[index], //背景颜色
               shadowColor: bgColors[index], //阴影
-              shadowBlur: 5 //阴影模糊
+              shadowBlur: 5, //阴影模糊
             },
             label: {
               normal: {
                 formatter: value.toFixed(0),
                 textStyle: {
-                  fontSize: 18
+                  fontSize: 18,
                 },
-                insideColor: "#fff" //colors[colorIndex][0]
-              }
-            }
-          }
-        ]
+                insideColor: "#fff", //colors[colorIndex][0]
+              },
+            },
+          },
+        ],
       };
       myChart2.setOption(option1);
     },
-  }
+  },
 };
 </script>
 
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>

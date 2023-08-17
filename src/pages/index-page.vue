@@ -24,7 +24,21 @@
                 ></el-avatar>
                 <span style="color: #fff; font-size: 15px">{{ username }}</span>
               </template>
-              <el-menu-item index="1-1" @click="toPending" v-if="isShow">
+              <el-menu-item index="1-1" @click="toDashboard">
+                <i
+                  class="iconfont icon-tuichudenglu"
+                  style="margin-right: 10px"
+                ></i
+                >首页
+              </el-menu-item>
+              <el-menu-item index="1-2" @click="toProfile">
+                <i
+                  class="iconfont icon-tuichudenglu"
+                  style="margin-right: 10px"
+                ></i
+                >用户信息
+              </el-menu-item>
+              <el-menu-item index="1-3" @click="toPending" v-if="isShow">
                 <el-badge
                   :value="count == 0 || !count ? 0 : count"
                   :hidden="count == 0 || !count ? true : false"
@@ -36,7 +50,7 @@
                   >待审批
                 </el-badge>
               </el-menu-item>
-              <el-menu-item index="1-2" @click="handleLogout">
+              <el-menu-item index="1-4" @click="handleLogout">
                 <i
                   class="iconfont icon-tuichudenglu"
                   style="margin-right: 10px"
@@ -140,6 +154,12 @@ export default {
     await this.get_menu();
   },
   methods: {
+    toProfile() {
+      this.$router.push("/profile1");
+    },
+    toDashboard() {
+      this.$router.push("/dashboard");
+    },
     toPending() {
       this.$router.push("/pending");
     },
