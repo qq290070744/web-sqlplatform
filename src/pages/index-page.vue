@@ -166,6 +166,14 @@ export default {
         this.$auth0.user.name === null ||
         this.$auth0.user.name === undefined
       ) {
+        if (
+          this.$auth0.user.nickname === "" ||
+          this.$auth0.user.nickname === null ||
+          this.$auth0.user.nickname === undefined
+        ) {
+          this.username = this.$auth0.user.sub;
+          this.$auth0.user.name = this.$auth0.user.sub;
+        }
         this.username = this.$auth0.user.nickname;
         this.$auth0.user.name = this.$auth0.user.nickname;
       }
