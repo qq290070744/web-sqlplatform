@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 4040",
     "build": "vite build",
+    "build:stage": "vite build --mode stage",
     "preview": "vite preview --port 5050",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "api": "json-server --host 0.0.0.0 --port 6060 --watch json-server/db.json --routes json-server/routes.json"
