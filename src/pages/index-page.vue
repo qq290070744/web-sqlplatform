@@ -173,9 +173,10 @@ export default {
         ) {
           this.username = this.$auth0.user.sub;
           this.$auth0.user.name = this.$auth0.user.sub;
+        } else {
+          this.username = this.$auth0.user.nickname;
+          this.$auth0.user.name = this.$auth0.user.nickname;
         }
-        this.username = this.$auth0.user.nickname;
-        this.$auth0.user.name = this.$auth0.user.nickname;
       }
       const { data, error } = await getMenu(
         this.$crypto.generateToken(
