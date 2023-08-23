@@ -29,7 +29,7 @@
                   class="iconfont icon-tuichudenglu"
                   style="margin-right: 10px"
                 ></i
-                >首页
+                >首页大屏
               </el-menu-item>
               <el-menu-item index="1-2" @click="toProfile">
                 <i
