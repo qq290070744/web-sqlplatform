@@ -1,4 +1,7 @@
 import CallbackPage from "@/pages/callback-page.vue";
+import Index from "@/pages/index-page.vue";
+import Query from "@/pages/Query.vue";
+import Inspect from "@/pages/Inspect.vue";
 import Vue from "vue";
 import Router from "vue-router";
 import { authenticationGuard } from "../authentication-guard";
@@ -11,11 +14,11 @@ const Profile = () => import("@/pages/profile.vue");
 const PublicPage = () => import("@/pages/public-page.vue");
 const ProtectedPage = () => import("@/pages/protected-page.vue");
 const AdminPage = () => import("@/pages/admin-page.vue");
-const Index = () => import("@/pages/index-page.vue");
+// const Index = () => import("@/pages/index-page.vue");
 const Dashboard = () => import("@/pages/Dashboard.vue");
-const Query = () => import("@/pages/Query.vue");
+// const Query = () => import("@/pages/Query.vue");
 const Instance = () => import("@/pages/Instance.vue");
-const Inspect = () => import("@/pages/Inspect.vue");
+// const Inspect = () => import("@/pages/Inspect.vue");
 const Role = () => import("@/pages/Role.vue");
 const User = () => import("@/pages/User.vue");
 const Workorder = () => import("@/pages/Workorder.vue");
@@ -47,7 +50,7 @@ const router = new Router({
     {
       path: "/index",
       name: "首页",
-      redirect: "/dashboard",
+      redirect: "/profile1",
       component: Index,
       beforeEnter: authenticationGuard,
       children: [
