@@ -40,8 +40,8 @@
               </el-menu-item>
               <el-menu-item index="1-3" @click="toPending" v-if="isShow">
                 <el-badge
-                  :value="count == 0 || !count ? 0 : count"
-                  :hidden="count == 0 || !count ? true : false"
+                  :value="count === 0 || !count ? 0 : count"
+                  :hidden="count === 0 || !count ? true : false"
                 >
                   <i
                     class="iconfont icon-daishenpizhishi"
