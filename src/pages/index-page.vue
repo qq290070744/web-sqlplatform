@@ -86,7 +86,11 @@
               &nbsp;
               <span>{{ item.title }}</span>
             </template>
-            <el-menu-item :index="child.path" v-for="child in item.children">
+            <el-menu-item
+              :index="child.path"
+              v-for="child in item.children"
+              :key="child.cid"
+            >
               <template>
                 <i :class="child.icon"></i>
                 <span slot="title">{{ child.title }}</span>
